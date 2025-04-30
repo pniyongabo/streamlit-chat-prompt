@@ -33,6 +33,7 @@ export class ChatInput extends StreamlitComponentBase<State, Props> {
   private maxImageFileCount: number = 20;
   private maxDocumentFileSizeInBytes: number = 4.5 * 1024 * 1024; // Default 4.5MB
   private maxDocumentFileCount: number = 5;
+  private isComposing = false;
 
   constructor(props: Props) {
     super(props as any);
@@ -683,11 +684,22 @@ export class ChatInput extends StreamlitComponentBase<State, Props> {
     this.focusTextField();
   }
 
+  handleCompositionStart = () => {
+    this.isComposing = true;
+  };
+
+  handleCompositionEnd = () => {
+    this.isComposing = false;
+  };
+
   async handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (this.state.disabled || this.state.clipboardInspector.open) return;
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      await this.handleSubmit();
+
+      if (!this.isComposing) {
+          await this.handleSubmit();
+      }
     }
   }
 
@@ -872,6 +884,8 @@ export class ChatInput extends StreamlitComponentBase<State, Props> {
                 value={this.state.text}
                 onChange={this.handleTextChange}
                 onKeyDown={this.handleKeyDown}
+                onCompositionStart={this.handleCompositionStart}
+                onCompositionEnd={this.handleCompositionEnd}
                 disabled={this.state.disabled}
                 placeholder={this.props.args?.placeholder ?? ''}
                 inputRef={this.textFieldRef}

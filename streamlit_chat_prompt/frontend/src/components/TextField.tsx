@@ -5,6 +5,8 @@ interface ChatTextFieldProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+    onCompositionStart: (e: React.CompositionEvent<HTMLInputElement>) => void;
+    onCompositionEnd: (e: React.CompositionEvent<HTMLInputElement>) => void;
     disabled: boolean;
     placeholder: string;
     inputRef: React.RefObject<HTMLInputElement>;
@@ -17,6 +19,8 @@ export const ChatTextField: React.FC<ChatTextFieldProps> = ({
     value,
     onChange,
     onKeyDown,
+    onCompositionStart,
+    onCompositionEnd,
     disabled,
     placeholder,
     inputRef,
@@ -31,6 +35,8 @@ export const ChatTextField: React.FC<ChatTextFieldProps> = ({
             value={value}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            onCompositionStart={onCompositionStart}
+            onCompositionEnd={onCompositionEnd}
             placeholder={placeholder}
             variant="standard"
             inputRef={inputRef}
